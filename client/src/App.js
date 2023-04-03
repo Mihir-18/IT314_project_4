@@ -1,25 +1,48 @@
-import Header from './Header.js';
-import BoardHeader from './BoardHeader.js';
-import PostForm from './PostForm.js';
-//import {SearchIcon} from '@heroicons/react/solid';
-//import {ChevronDownIcon} from '@heroicons/react/solid';
+import BoardHeader from './BoardHeader';
+import Header from './Header';
+import PostForm from './Postform';
+import AuthModal from './AuthModal';
+import AuthModalContext from './AuthModalContext';
+import './style.css';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import UserContext from './UserContext';
 
 function App() {
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    axios.get('http://localhost:4000/user', { withCredentials: true })
+      .then(response => setUser(response.data));
+  }, []);
+
+  function logout(){
+    axios.post('http://localhost:4000/logout', {}, {withCredentials:true})
+    .then(() => setUser({}));
+  }
   return (
-    <div>
-      <Header />
-      <BoardHeader />
-      <PostForm />
-      <div className="px-6 bg-dark text-Text">
-        <div className="border border-borderColor bg-dark-brighter p-2 rounded-md">
-          <h5 className="text-Text-darker text-sm mb-1">Posted by u/test123 5 hours ago</h5>
-          <h2 className="text-xl mb-3">A year into my switching from WordPress to Craft. My general findings...</h2>
-          <div className="text-sm leading-6">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aenean sed adipiscing diam donec adipiscing. Nulla facilisi morbi tempus iaculis urna. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Purus semper eget duis at tellus at urna. Et ultrices neque ornare aenean euismod elementum. Sit amet est placerat in egestas erat. Neque ornare aenean euismod elementum nisi quis eleifend. Mauris pharetra et ultrices neque ornare. Sem viverra aliquet eget sit amet. Ultrices neque ornare aenean euismod elementum nisi quis eleifend quam. Amet venenatis urna cursus eget nunc. Non pulvinar neque laoreet suspendisse interdum consectetur. Ridiculus mus mauris vitae ultricies. Id porta nibh venenatis cras sed felis. Dolor morbi non arcu risus quis varius. Pharetra vel turpis nunc eget lorem dolor sed viverra ipsum. Tortor condimentum lacinia quis vel eros donec ac odio tempor. Diam maecenas sed enim ut sem viverra aliquet eget. In metus vulputate eu scelerisque felis. Enim neque volutpat ac tincidunt vitae semper quis lectus. Non tellus orci ac auctor augue mauris augue. Justo donec enim diam vulputate ut pharetra. Interdum velit laoreet id donec ultrices tincidunt arcu. Ut diam quam nulla porttitor massa id neque aliquam. Id eu nisl nunc mi ipsum faucibus. Id diam maecenas ultricies mi eget mauris pharetra. Nunc mattis enim ut tellus. Aenean pharetra magna ac placerat vestibulum lectus. In dictum non consectetur a erat nam at. Nulla pellentesque dignissim enim sit amet venenatis urna. Id aliquet risus feugiat in ante. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Sem nulla pharetra diam sit amet. Sed faucibus turpis in eu mi. Cras adipiscing enim eu turpis egestas pretium aenean. Leo duis ut diam quam nulla porttitor massa id. Consectetur adipiscing elit pellentesque habitant. Purus in mollis nunc sed id semper risus. Aliquam ut porttitor leo a diam sollicitudin tempor id eu. Vitae tortor condimentum lacinia quis vel. Et sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque. Amet massa vitae tortor condimentum lacinia quis vel eros donec. Auctor urna nunc id cursus metus. Fringilla urna porttitor rhoncus dolor. In egestas erat imperdiet sed euismod. Viverra maecenas accumsan lacus vel facilisis volutpat. Velit aliquet sagittis id consectetur purus ut faucibus. Est sit amet facilisis magna etiam tempor orci eu. Imperdiet massa tincidunt nunc pulvinar. Pellentesque nec nam aliquam sem et. Scelerisque eu ultrices vitae auctor eu augue. Tortor at risus viverra adipiscing at in. At augue eget arcu dictum varius duis at consectetur lorem. Ultrices sagittis orci a scelerisque purus. At tellus at urna condimentum mattis pellentesque id nibh. Id venenatis a condimentum vitae sapien. Mi eget mauris pharetra et. Aenean vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant. Morbi blandit cursus risus at ultrices mi tempus imperdiet nulla. Quam viverra orci sagittis eu volutpat. Placerat duis ultricies lacus sed turpis tincidunt id aliquet risus. Convallis aenean et tortor at risus viverra adipiscing at in. Urna neque viverra justo nec ultrices dui sapien eget mi. Ut ornare lectus sit amet. Orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt tortor. Nulla pellentesque dignissim enim sit. Mauris commodo quis imperdiet massa. Malesuada fames ac turpis egestas sed tempus urna et. Id diam vel quam elementum pulvinar etiam non quam. Quam pellentesque nec nam aliquam sem et tortor. Augue lacus viverra vitae congue eu consequat ac felis donec. Morbi tincidunt augue interdum velit. Nunc sed id semper risus in hendrerit gravida. Vitae purus faucibus ornare suspendisse sed. Augue interdum velit euismod in pellentesque massa. Mi tempus imperdiet nulla malesuada pellentesque. Elementum facilisis leo vel fringilla est. Gravida rutrum quisque non tellus. Enim nulla aliquet porttitor lacus. Duis tristique sollicitudin nibh sit amet commodo. Fames ac turpis egestas integer eget aliquet nibh praesent. Ipsum dolor sit amet consectetur adipiscing elit duis tristique. Sollicitudin tempor id eu nisl. Ac feugiat sed lectus vestibulum mattis ullamcorper. Nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis. Tortor id aliquet lectus proin nibh nisl condimentum. Fusce ut placerat orci nulla pellentesque dignissim enim. Lacus luctus accumsan tortor posuere ac ut consequat semper viverra. Hac habitasse platea dictumst vestibulum. Integer eget aliquet nibh praesent. Condimentum lacinia quis vel eros donec ac odio tempor orci. Habitant morbi tristique senectus et netus et malesuada fames ac. Luctus venenatis lectus magna fringilla urna porttitor rhoncus dolor. Turpis egestas maecenas pharetra convallis posuere morbi leo urna molestie. Id volutpat lacus laoreet non. Egestas maecenas pharetra convallis posuere morbi leo urna. Vitae congue eu consequat ac felis donec et odio pellentesque. Amet tellus cras adipiscing enim. Tellus mauris a diam maecenas sed enim ut sem.</p>
+    <AuthModalContext.Provider value={{ show: showAuthModal, setShow: setShowAuthModal }}>
+      <UserContext.Provider value={{...user, logout, setUser}}>
+        <Header />
+        <BoardHeader />
+        <PostForm />
+        <AuthModal />
+        <div className="bg-reddit_dark px-6 text-reddit_text">
+          <div className='border border-reddit_border bg-reddit_dark-brighter rounded-md'>
+            <h5 className="text-reddit_text-darker text-sm mb-1">Posted by u/ test123 3 hours ago</h5>
+            <h2 className='text-xl mb-3'>UK hourly & day rate question</h2>
+            <div className='text-sm leading-6'>Hi everyone - Like everyone I'm having the cost of living price rices affect my small freelance business (just me and a few people i contract in on jobs) and I'm reviewing my pricing. It's something I've always struggled with gauging and perhaps something I'll always second guess, but I was hoping to open up a chat on here regarding hourly and day rates and maybe it might help others too.I am a multidisciplinary digital freelancer, which makes me sound like a jack of all trades, but I've been doing this professionally full time for 17 years. I consult with brands generally to come up with an entire project and strategy, usually regarding new or improved web presence, and most of my time practically is spent building apps/websites & various projects for clients in my home office, where I build everything from scratch from my own prototypes. I've contracted for the UK government and some other agencies as a frontend dev and UX/UI designer which is another reason why I find it hard to price for freelance as the rates contracting are very good.I also do video production (degree qualified) but only the office based stuff (editing and planning) do I currently keep at the same rate as the rest of my work, so this is just regarding that.
+
+              I'm based in Wales in the UK so companies are generally not looking to spend lots here when compared to bigger cities (London prices for example always much more), and although I have worked with big brands I've found my niche with smaller startups and locally based business with national reach who in fairness I like working with.
+
+              Be really curious to hear a ballpark guess at what a a fair hourly rate and day rate would be - there's no right answer, i just think it would be helpful. I'm also not sure how to structure the difference between hourly and day. I always try to group work into days, but it's not always possible, and I often need to just charge someone a few hours or a day and half. So I'm not sure whether my day rate just needs to be hours x 7 for example, or i should be rewarding clients with a discounted rate for an entire day.
+
+              Many thanks to anyone kind enough to share their input; be really cool to hear people's honest thoughts with where they're at as I'm sure most of us struggle with this in some way.</div>
           </div>
         </div>
-      </div>
-    </div>
+      </UserContext.Provider>
+    </AuthModalContext.Provider>
   );
 }
 
