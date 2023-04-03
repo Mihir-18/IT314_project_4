@@ -1,25 +1,26 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"
-  ],
+  purge: ['./src/*{.js}', './public/index.html'],
+  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
-        dark:{
+        reddit_dark: {
           DEFAULT: '#030303',
           brighter: '#1a1a1a',
           brightest: '#272728',
         },
-        borderColor:{
+        reddit_border: {
           DEFAULT: '#343536',
         },
-        Text:{
-          DEFAULT: 'rgb(215, 218, 220)',
+        reddit_text: {
+          DEFAULT: '#d7dadc',
           darker: '#818384',
         },
       },
     },
+  },
+  variants: {
+    extend: {},
   },
   plugins: [],
 }
