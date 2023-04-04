@@ -12,4 +12,6 @@ function Voting(props){
     );
 }
 
+
+
 export default Voting;
