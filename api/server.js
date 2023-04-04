@@ -6,6 +6,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from './models/User.js';
+import VotingRoutes from "./VotingRoutes.js";
 
 const secret='secret123';
 const app = express();
@@ -18,6 +19,8 @@ app.use(cors({
      origin: 'http://localhost:3000',
      credentials: true,
 }));
+
+app.use(VotingRoutes);
 
 await mongoose.connect('mongodb://0.0.0.0:27017/News_Aggregator', {useNewUrlParser:true, useUnifiedTopology:true,});
 const db=mongoose.connection;
