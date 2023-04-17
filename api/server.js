@@ -6,6 +6,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from './models/User.js';
+import Comment from "./models/Comment.js";
 
 const secret='secret123';
 const app = express();
@@ -82,4 +83,15 @@ app.post('/login', (req, res) => {
 app.post('/logout', (req, res)=>{
      res.cookie('token', '').send();
 });
+
+app.get('/comments', (req, res) => {
+  const search = req.query.search;
+  const filters = search
+    ? {body: {$regex: '.*'+search+'.*'}}
+    : {rootId:null};
+  Comment.find(filters).sort({postedAt: -1}).then(comments => {
+    res.json(comments);
+  });
+});
+
 app.listen(4000);
