@@ -8,19 +8,23 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import UserContext from './UserContext';
 import Post from './Post';
+import PostsListing from './PostsListing';
+import {
+    Routes,
+    Route,
+    BrowserRouter as Router,
+} from "react-router-dom";
+import Board from './Board';
+import CommentPage from "./CommentPage";
+
 
 function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [user, setUser] = useState({});
-  const [comments,setComments] = useState([]);
-
 
   useEffect(() => {
     axios.get('http://localhost:4000/user', { withCredentials: true })
       .then(response => setUser(response.data));
-
-    axios.get('http://localhost:4000/comments', { withCredentials: true })
-      .then(response => setComments(response.data));
 
   }, []);
 
@@ -32,16 +36,15 @@ function App() {
     <AuthModalContext.Provider value={{ show: showAuthModal, setShow: setShowAuthModal }}>
       <UserContext.Provider value={{...user, logout, setUser}}>
         <Header />
-        <BoardHeader />
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<Board/>} />
+            <Route path="/comments/:id" element={<CommentPage/>}/>
+          </Routes>
+        </Router>
         <AuthModal />
-        <PostForm />
-        <div>
-          {comments.map(comment => (
-            <Post />
-          ))}
+         
 
-        </div>
-        <Post />
       </UserContext.Provider>
     </AuthModalContext.Provider>
   );
