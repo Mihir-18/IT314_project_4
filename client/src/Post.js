@@ -1,16 +1,23 @@
 import {Link} from "react-router-dom";
-
+import PostContent from "./PostContent";
 
 function Post(props) {
+
+  const postClasses = "block border border-reddit_border bg-reddit_dark-brighter p-2 rounded-md " + (props.open ? "" : "hover:border-reddit_text cursor-pointer");
   return (
-    <div className=" px-6 text-reddit_text pb-4">
-      <Link to={'/comments/'+props._id} className=' block border border-reddit_border hover:border-reddit_text bg-reddit_dark-brighter p-2 rounded-md cursor-pointer'>
-        <h5 className="text-reddit_text-darker text-sm mb-1">Posted by u/ test123 3 hours ago</h5>
-        <h2 className='text-xl mb-3'>UK hourly & day rate question</h2>
-        <div className='text-sm leading-6'>
-          {props.body}
+    <div className="px-6 text-reddit_text pb-4">
+      {props.open && (
+        <div className={postClasses}>
+          <PostContent {...props} />
         </div>
-      </Link>
+      )}
+      {!props.open && (
+        <Link to={{pathname:'/comments/'+props._id,state:{commentId:props._id}}} className={postClasses}>
+          <PostContent {...props} />
+        </Link>
+      )}
+
+
     </div>
   );
 }

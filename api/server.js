@@ -94,4 +94,16 @@ app.get('/comments', (req, res) => {
   });
 });
 
+app.get('/comments', (req, res) => {
+  Comment.find().then(comments => {
+    res.json(comments);
+  });
+});
+
+app.get('/comments/:id', (req, res) => {
+  Comment.findById(req.params.id).then(comment => {
+    res.json(comment);
+  });
+})
+
 app.listen(4000);

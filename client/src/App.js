@@ -12,6 +12,7 @@ import PostsListing from './PostsListing';
 import {
     Routes,
     Route,
+    useLocation,
     BrowserRouter as Router,
 } from "react-router-dom";
 import Board from './Board';
@@ -32,6 +33,11 @@ function App() {
     axios.post('http://localhost:4000/logout', {}, {withCredentials:true})
     .then(() => setUser({}));
   }
+
+  // const location = useLocation();
+  // console.log(location);
+
+
   return (
     <AuthModalContext.Provider value={{ show: showAuthModal, setShow: setShowAuthModal }}>
       <UserContext.Provider value={{...user, logout, setUser}}>
@@ -39,7 +45,7 @@ function App() {
         <Router>
           <Routes>
             <Route exact path="/" element={<Board/>} />
-            <Route path="/comments/:id" element={<CommentPage/>}/>
+            <Route exact path="/comments/:id" element={<CommentPage/>}/>
           </Routes>
         </Router>
         <AuthModal />
