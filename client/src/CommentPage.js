@@ -12,6 +12,7 @@ function CommentPage(props) {
       .catch(error => console.log(error));
   }, []);
 
+  
   return (
     <div className="bg-reddit_dark py-4">
       {comment && (

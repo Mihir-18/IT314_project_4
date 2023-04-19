@@ -17,6 +17,7 @@ import {
 } from "react-router-dom";
 import Board from './Board';
 import CommentPage from "./CommentPage";
+import Routing from './Routing';
 
 
 function App() {
@@ -34,20 +35,13 @@ function App() {
     .then(() => setUser({}));
   }
 
-  // const location = useLocation();
-  // console.log(location);
+
 
 
   return (
     <AuthModalContext.Provider value={{ show: showAuthModal, setShow: setShowAuthModal }}>
       <UserContext.Provider value={{...user, logout, setUser}}>
-        <Header />
-        <Router>
-          <Routes>
-            <Route exact path="/" element={<Board/>} />
-            <Route exact path="/comments/:id" element={<CommentPage/>}/>
-          </Routes>
-        </Router>
+        <Routing />
         <AuthModal />
          
 
