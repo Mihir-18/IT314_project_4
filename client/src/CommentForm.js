@@ -15,6 +15,9 @@ function CommentForm(props){
         axios.post('http://localhost:4000/comments', data, {withCredentials:true} )
             .then(response => {
                 setCommentBody('');
+                if(props.onSubmit){
+                    props.onSubmit();
+                }
             }).catch(error=>{
                 alert(error.response.data.message);
                 alert('Failed for root='+data.rootId);

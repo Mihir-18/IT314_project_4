@@ -4,11 +4,19 @@ import axios from 'axios';
 import ClickOutHandler from 'react-clickout-handler';
 import CommentForm from './CommentForm.js';
 import Comments from './Comments.js';
+import RootCommentContext from "./RootCommentContext";
 
 function CommentModal(props){
     const [comment, setComment] = useState({});
     const [comments, setComments] = useState([]);
     const visibleClass= props.open? 'block': 'hidden';
+
+    function refreshComments(){
+        axios.get('http://localhost:4000/comments/root/' + props.id)
+            .then(response => {
+                setComments(response.data);
+            });
+    }
 
     useEffect(() => {
         axios.get('http://localhost:4000/comments/' + props.id)
@@ -16,11 +24,13 @@ function CommentModal(props){
                     setComment(response.data);
                 }
             );
-        axios.get('http://localhost:4000/comments/root/' + props.id)
-            .then(response => {
-                setComments(response.data);
-            });
-
+        
+            refreshComments();
+        // axios.get('http://localhost:4000/comments/root/' + props.id)
+        // .then(response => {
+        //     setComments(response.data);
+        // });
+        
     }, [props.id]);
 
     function close(){
@@ -37,9 +47,11 @@ function CommentModal(props){
                         {!!comment && !!comment._id && (
                             <>
                                 <hr className="border-reddit_border my-4"/>
-                                <CommentForm rootId={comment._id} parentId={comment._id} showAuthor={true}/>
+                                <CommentForm onsubmit={() => refreshComments()} rootId={comment._id} parentId={comment._id} showAuthor={true}/>
                                 <hr className="border-reddit_border my-4"/>
-                                <Comments parentId={comment._id} comments={comments} />
+                                <RootCommentContext.Provider value={{refreshComments}}>
+                                    <Comments parentId={comment._id} rootId={comment._id} comments={comments} />
+                                </RootCommentContext.Provider>
                             </>
                         )}
                     </div>
