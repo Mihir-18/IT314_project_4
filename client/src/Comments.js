@@ -2,6 +2,8 @@ import Button from "./Button";
 import CommentForm from './CommentForm';
 import {useState, useContext} from 'react';
 import RootCommentContext from "./RootCommentContext";
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 
 function Comments(props){
     const rootCommentInfo = useContext(RootCommentContext);
@@ -21,7 +23,9 @@ function Comments(props){
                     </div>
                     <div className="border-l-2 border-reddit_text-darker p-3 pb-0" style={{marginLeft:'18px'}}>
                         <div className="pl-4">
-                            <div>{comment.body}</div>
+                            <div>
+                                <ReactMarkdown remarkPlugins={[gfm]} children={comment.body} />
+                            </div>
                             <Button 
                                 type={'button'}
                                 onClick={() => {setShowForm(comment._id)} }

@@ -4,33 +4,18 @@ import axios from 'axios';
 import ClickOutHandler from 'react-clickout-handler';
 import CommentForm from './CommentForm.js';
 import Comments from './Comments.js';
+import Comment from './Comment';
 import RootCommentContext from "./RootCommentContext";
 
 function CommentModal(props){
     const [comment, setComment] = useState({});
-    const [comments, setComments] = useState([]);
     const visibleClass= props.open? 'block': 'hidden';
 
-    function refreshComments(){
-        axios.get('http://localhost:4000/comments/root/' + props.id)
-            .then(response => {
-                setComments(response.data);
-            });
-    }
-
     useEffect(() => {
-        axios.get('http://localhost:4000/comments/' + props.id)
-            .then(response => {
-                    setComment(response.data);
-                }
-            );
-        
-            refreshComments();
-        // axios.get('http://localhost:4000/comments/root/' + props.id)
-        // .then(response => {
-        //     setComments(response.data);
-        // });
-        
+        axios.get('http://localhost:4000/comments/'+props.id)
+          .then(response => {
+            setComment(response.data);
+          });
     }, [props.id]);
 
     function close(){
@@ -43,7 +28,7 @@ function CommentModal(props){
             <ClickOutHandler onClickOut={()=>close()}>
                 <div className="border border-reddit_dark-brightest my-4 w-3/4 md:w-1/2 bg-reddit_dark text-reddit_text p-4 mx-auto self-center rounded-md ">
                     <div className="block overflow-scroll" style={{ maxHeight: "calc(100vh - 200px)" }}>
-                        <PostContent open={true} {...comment} />
+                        {/* <PostContent open={true} {...comment} />
                         {!!comment && !!comment._id && (
                             <>
                                 <hr className="border-reddit_border my-4"/>
@@ -53,7 +38,8 @@ function CommentModal(props){
                                     <Comments parentId={comment._id} rootId={comment._id} comments={comments} />
                                 </RootCommentContext.Provider>
                             </>
-                        )}
+                        )} */}
+                        <Comment id={props.id}/>
                     </div>
                 </div>
             </ClickOutHandler>  
