@@ -5,6 +5,7 @@ import Button from './Button';
 import { useState, useEffect, useRef, useContext } from 'react';
 import AuthModalContext from './AuthModalContext';
 import UserContext from './UserContext';
+import {Link} from 'react-router-dom';
 
 function Header() {
   const [userDropdownVisibilityClass, setuserDropdownVisibilityClass] = useState('hidden');
@@ -40,9 +41,9 @@ function Header() {
   return (
     <header className='flex bg-reddit_dark w-full p-2'>
       <div className="mx-4 flex relative w-full">
-        {/* <Link to="/"> */}
+        <Link to="/">
           <img src={Logo} alt="" className='w-8 h-8 bg-reddit_dark' />
-        {/* </Link> */}
+        </Link>
         <form action="" className='bg-redddt_dark-brighter flex mx-4 p-1 px-3 rounded-md border border-reddit_border flex-grow'>
           <SearchIcon className='text-gray-400 h-6 w-6 mt-1' />
           <input type="text" placeholder='Search' className='bg-reddit_dark-brighter p-1 pl-2 pr-0 focus:outline-none text-white text-sm' />
@@ -75,7 +76,7 @@ function Header() {
           <ChevronDownIcon className='text-gray-500 w-5 mt-2 m-1' />
           <button className={'absolute right-0 top-8 bg-reddit_dark border border-gray-700 z-10 rounded-md text-reddit_text overflow-hidden ' + userDropdownVisibilityClass}>
             {user.username && (
-              <span data-testid="username" className='block w-50 py-2 px-3 text-sm'>
+              <span className='block w-50 py-2 px-3 text-sm'>
                 Hello, {user.username}!
               </span>
             )}

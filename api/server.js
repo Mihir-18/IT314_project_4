@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from './models/User.js';
 import nodemailer from "nodemailer";
+import Comment from './models/Comment.js';
 
 
 const secret = 'secret123';
@@ -132,33 +133,48 @@ app.post('/logout', (req, res) => {
      res.cookie('token', '').send();
 });
 
-app.get('/comments', (req, res) => {
-     Comment.find().sort({ postedAt: -1 }).then(comments => {
+app.get('/comments', (req, res)=>{
+     Comment.find({rootId:null}).sort({postedAt: -1}).then(comments =>{
           res.json(comments);
      });
 });
 
-app.get('/comments/:id', (req, res) => {
+app.get('/comments/root/:rootId', (req, res)=>{
+     Comment.find({rootId:req.params.rootId}).sort({postedAt: -1}).then(comments =>{
+          res.json(comments);
+     });
+});
+
+
+app.get('/comments/:id', (req, res)=>{
      Comment.findById(req.params.id).then(comment => {
           res.json(comment);
      });
 });
 
-app.post('/comments', (req, res) => {
-     const token = req.cookies.token;
-     if (!token) {
+app.post('/comments', (req, res)=>{
+     const token= req.cookies.token;
+     if(!token){
           res.sendStatus(401);
           return;
      }
-     getUserFromToken(token).then(userInfo => {
-          const { title, body } = req.body;
-          const comment = new Comment({ title, body, author: userInfo.username, postedAt: new Date(), });
+     getUserFromToken(token).then(userInfo=>{
+          const {title,body,parentId,rootId} = req.body;
+          const comment = new Comment({
+          title,
+          body,
+          author:userInfo.username,
+          postedAt:new Date(),
+          parentId,
+          rootId,
+          });
           comment.save().then(savedComment => {
                res.json(savedComment);
           }).catch(console.log);
-     }).catch(() => {
+     }).catch(()=>{
           res.sendStatus(401);
      });
 });
+
 
 app.listen(4000);
