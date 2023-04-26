@@ -20,7 +20,7 @@ app.use(cors({
      credentials: true,
 }));
 
-await mongoose.connect('mongodb://0.0.0.0:27017/newsAggregator', { useNewUrlParser: true, useUnifiedTopology: true, });
+await mongoose.connect('mongodb+srv://suyash:rjoa7zvue5mGQagd@cluster0.1u8c2l7.mongodb.net/newsAggregator', { useNewUrlParser: true, useUnifiedTopology: true, });
 const db = mongoose.connection;
 db.on('error', console.log);
 
