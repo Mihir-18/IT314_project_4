@@ -53,7 +53,7 @@ function Comment(props){
                                 <hr className="border-reddit_border my-4"/>
                                 <CommentForm onSubmit={() => refreshComments()} rootId={comment._id} parentId={comment._id} showAuthor={true}/>
                                 <hr className="border-reddit_border my-4"/>
-                                <RootCommentContext.Provider value={{refreshComments, commentsTotals, userVotes}}>
+                                <RootCommentContext.Provider value={{refreshComments, refreshVotes, commentsTotals, userVotes}}>
                                     <Comments parentId={comment._id} rootId={comment._id} comments={comments}/>
                                 </RootCommentContext.Provider>
                             </>

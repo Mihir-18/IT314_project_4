@@ -96,7 +96,7 @@ function AuthModal(props) {
      // }
      return (
           <div className={"w-screen h-screen absolute top-0 left-0 z-30 flex " + visibleClass} style={{ backgroundColor: 'rgba(0,0,0,.6)' }}>
-               <button className="border border-reddit_dark-brightest w-3/4 sm:w-1/2 md:w-1/4 bg-reddit_dark p-5 text-reddit_text mx-auto self-center rounded-md " ref={userDropdownRef}>
+               <button className="border border-reddit_dark-brightest w-3/4 sm:w-1/2 lg:w-1/4 bg-reddit_dark p-5 text-reddit_text mx-auto self-center rounded-md " ref={userDropdownRef}>
                     {modalType === 'login' && (
                          <h1 className="text-2xl mb-5">Log In</h1>
                     )}

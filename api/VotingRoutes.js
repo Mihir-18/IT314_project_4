@@ -7,19 +7,26 @@ const router= express.Router();
 router.get('/vote/:commentId/:direction', (req, res) =>{
     getUserFromToken(req.cookies.token)
     .then(userInfo => {
-        const vote= new Vote({
-            author: userInfo.username,
-            direction: req.params.direction === 'up' ? 1 : -1,
-            commentId: req.params.commentId,
-        });
-        vote.save().then(()=>{
-            Vote.find({commentId: req.params.commentId,})
-            .then(commentVotes =>{
-                let total= 0;
-                commentVotes.forEach(vote => {total+=vote.direction});
-                res.json(total);
+
+        Vote.deleteOne({commentId: req.params.commentId, author: userInfo.username})
+        .then( () => {
+
+            if(['up','down'].indexOf(req.params.direction) === -1){
+                res.json(true);
+                return; 
+            }
+
+            const vote = new Vote({
+                author: userInfo.username,
+                direction: req.params.direction === 'up' ? 1 : -1,
+                commentId: req.params.commentId,
             });
+            vote.save().then(() => {
+                res.json(true);
+            });
+
         });
+
     });
 });
 

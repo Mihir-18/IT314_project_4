@@ -1,10 +1,6 @@
-import PostContent from "./PostContent";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ClickOutHandler from 'react-clickout-handler';
-import CommentForm from "./CommentForm";
-import Comments from "./Comments";
-import RootCommentContext from "./RootCommentContext";
 import Comment from "./Comment";
 
 
@@ -27,7 +23,7 @@ function CommentModal(props){
     return(
         <div className={"w-screen h-screen fixed top-0 left-0 z-20 flex "+visibleClass} style={{ backgroundColor: 'rgba(0,0,0,.6)' }}>
             <ClickOutHandler onClickOut={()=>close()}>
-                <div className="border border-reddit_dark-brightest my-4 w-3/4 md:w-1/2 bg-reddit_dark text-reddit_text p-4 mx-auto self-center rounded-md ">
+                <div className="border border-reddit_dark-brightest my-4 w-3/4 lg:w-1/2 bg-reddit_dark text-reddit_text p-4 mx-auto self-center rounded-md ">
                     <div className="block overflow-scroll" style={{ maxHeight: "calc(100vh - 200px)" }}>
                         {/* <PostContent open={true} {...comment} />
                         {!!comment && !!comment._id && (
