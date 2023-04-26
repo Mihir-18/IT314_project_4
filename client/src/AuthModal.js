@@ -11,10 +11,6 @@ function AuthModal(props) {
      const [email, setEmail] = useState('');
      const [username, setUsername] = useState('');
      const [password, setPassword] = useState('');
-     const [poorPassword, setPoorPassword] = useState(false);
-     const [weakPassword, setWeakPassword] = useState(false);
-     const [strongPassword, setStrongPassword] = useState(false);
-     const [passwordError, setPasswordErr] = useState("");
 
      const modalContext = useContext(AuthModalContext);
      const user = useContext(UserContext);
@@ -31,7 +27,7 @@ function AuthModal(props) {
                axios.post('http://localhost:4000/register', data, { withCredentials: true })
                     .then((response) => {
                          console.log(response);
-                         if (response.status !== 200) {
+                         if (response.data === "Invalid username or password") {
                               setregisterStatus("invalid");
                          }
                          else {
@@ -40,22 +36,13 @@ function AuthModal(props) {
                               modalContext.setShow(false);
                          }
                     }).catch(err => {
-
-                         if (err.response.data === "Email already exists!") {
-                              setregisterStatus("Email already exists!");
-                         }
-                         else if (err.response.data === "Username already exists!") {
-                              setregisterStatus("Username already exists!");
-                         }
-                         else {
-                              setregisterStatus("invalid");
-                         }
+                         console.log(err);
                     });
                setEmail('');
                setUsername('');
                setPassword('');
           }
-          else {
+          else{
                setregisterStatus("invalid");
           }
 
@@ -67,91 +54,26 @@ function AuthModal(props) {
           const data = { username, password };
           axios.post('http://localhost:4000/login', data, { withCredentials: true })
                .then((response) => {
-                    if (response.status !== 200) {
-                         // console.log(response);
+                    if (response.data === "Invalid username or password") {
                          setregisterStatus("invalid");
                     }
                     else {
-                         // console.log(response);
+                         console.log(response)
                          modalContext.setShow(false);
                          user.setUser({ username });
                          setregisterStatus("");
                     }
-               }).catch(err => {
-                    // console.log(err);
-                    setregisterStatus("invalid");
-               });
+               })
           setEmail('');
           setUsername('');
           setPassword('');
      }
 
-     
-     
-     function passwordStrength (event) {
-          // evnt.preventDefault();
-          console.log(event);
-          // setPassword(event);
-          const passwordValue = password;
-          const passwordLength = passwordValue.length;
-          const poorRegExp = /[a-z]/;
-          const weakRegExp = /(?=.*?[0-9])/;;
-          const strongRegExp = /(?=.*?[#?!@$%^&*-])/;
-          const whitespaceRegExp = /^$|\s+/;
-          const poorPassword = poorRegExp.test(passwordValue);
-          const weakPassword = weakRegExp.test(passwordValue);
-          const strongPassword = strongRegExp.test(passwordValue);
-          const whiteSpace = whitespaceRegExp.test(passwordValue);
-
-          if (passwordValue === '') {
-               setPasswordErr("Password is Empty");
-          } else {
-
-               // to check whitespace
-               if (whiteSpace) {
-                    setPasswordErr("Whitespaces are not allowed");
-               }
-               // to check poor password
-               if (passwordLength <= 3 && (poorPassword || weakPassword || strongPassword)) {
-                    setPoorPassword(true);
-                    setWeakPassword(false);
-                    setStrongPassword(false);
-
-                    setPasswordErr("Password is Poor");
-               }
-               // to check weak password
-               if (passwordLength >= 4 && poorPassword && (weakPassword || strongPassword)) {
-                    setWeakPassword(true);
-                    setPoorPassword(false);
-                    setStrongPassword(false);
-                    setPasswordErr("Password is Weak");
-               } else {
-                    setWeakPassword(false);
-               }
-               // to check strong Password
-               if (passwordLength >= 6 && (poorPassword && weakPassword) && strongPassword) {
-                    setStrongPassword(true);
-                    setPoorPassword(false);
-                    setWeakPassword(false);
-                    setPasswordErr("Password is Strong");
-               } else {
-                    setStrongPassword(false);
-               }
-          }
-     }
-     function call(event){
-          setPassword(event.target.value);
-          passwordStrength(event.target.value)
-     }
      function useUserDropdown(ref) {
           useEffect(() => {
                function handleClickOutside(event) {
                     if (ref.current && !ref.current.contains(event.target)) {
                          modalContext.setShow(false);
-                         setregisterStatus("");
-                         setPoorPassword(false);
-                         setWeakPassword(false);
-                         setStrongPassword(false);
                     }
                }
                document.addEventListener("mousedown", handleClickOutside);
@@ -184,12 +106,6 @@ function AuthModal(props) {
                     {registerStatus === 'invalid' && (
                          <h4 className="text-red-700">Invalid Credentials</h4>
                     )}
-                    {registerStatus === 'Email already exists!' && (
-                         <h4 className="text-red-700">Email already exists!</h4>
-                    )}
-                    {registerStatus === 'Username already exists!' && (
-                         <h4 className="text-red-700">Username already exists!</h4>
-                    )}
                     {modalType === 'register' && (
                          <label>
                               <span className="text-reddit_text-darker text-sm">Email:</span>
@@ -203,18 +119,8 @@ function AuthModal(props) {
                     </label>
                     <label>
                          <span className="text-reddit_text-darker text-sm">Password:</span>
-                         <Input type="password" className='mb-3 w-full' value={password} onChange={event => call(event)}  />
+                         <Input type="password" className='mb-3 w-full' value={password} onChange={event => setPassword(event.target.value)} />
                     </label>
-                    {poorPassword && modalType ==='register' && (
-                         <h4 className="text-red-500 pb-2">{passwordError}</h4>
-                    )}
-                    {weakPassword && modalType ==='register' &&(
-                         <h4 className="text-yellow-300 pb-2">{passwordError}</h4>
-                    )}
-                    {strongPassword && modalType ==='register' &&(
-                         <h4 className="text-green-500 pb-2">{passwordError}</h4>
-                    )}
-                    
                     {modalType === 'login' && (
                          <Button className='w-full py-2 mb-3 ' style={{ borderRadius: '.3rem' }} onClick={event => login(event)}>
                               Log In
@@ -228,12 +134,12 @@ function AuthModal(props) {
 
                     {modalType === 'login' && (
                          <div>
-                              New to Reddit? <button className="text-blue-600" onClick={() => modalContext.setShow('register')}>SIGN UP</button>
+                              New to Reddit? <button className="text-blue-600" onClick={() => modalContext.setShow('register') }>SIGN UP</button>
                          </div>
                     )}
                     {modalType === 'register' && (
                          <div>
-                              Already have an account? <button className="text-blue-600" onClick={() => modalContext.setShow('api')}>LOG IN</button>
+                              Already have an account? <button className="text-blue-600" onClick={() => modalContext.setShow('api') }>LOG IN</button>
                          </div>
                     )}
 

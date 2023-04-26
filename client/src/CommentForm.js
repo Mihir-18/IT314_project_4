@@ -18,9 +18,6 @@ function CommentForm(props){
                 if(props.onSubmit){
                     props.onSubmit();
                 }
-            }).catch(error=>{
-                alert(error.response.data.message);
-                alert('Failed for root='+data.rootId);
             });
     }
 
@@ -48,7 +45,7 @@ function CommentForm(props){
                             className="p-2 mr-2" 
                             onClick={e => props.onCancel() }>Cancel</Button>
                     )}
-                    <Button className="p-2" onClick>Comment</Button>
+                    <Button className="p-2">Comment</Button>
                 </div>
             </form>
         </div>

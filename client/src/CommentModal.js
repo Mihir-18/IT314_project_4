@@ -1,11 +1,12 @@
-import PostContent from './PostContent.js';
-import {useState, useEffect} from 'react';
-import axios from 'axios';
+import PostContent from "./PostContent";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import ClickOutHandler from 'react-clickout-handler';
-import CommentForm from './CommentForm.js';
-import Comments from './Comments.js';
-import Comment from './Comment';
+import CommentForm from "./CommentForm";
+import Comments from "./Comments";
 import RootCommentContext from "./RootCommentContext";
+import Comment from "./Comment";
+
 
 function CommentModal(props){
     const [comment, setComment] = useState({});
@@ -39,7 +40,7 @@ function CommentModal(props){
                                 </RootCommentContext.Provider>
                             </>
                         )} */}
-                        <Comment id={props.id}/>
+                        <Comment comment={comment} id={props.id}/>
                     </div>
                 </div>
             </ClickOutHandler>  

@@ -1,9 +1,10 @@
-import Button from "./Button";
-import CommentForm from './CommentForm';
+import Button from "./Button.js";
+import CommentForm from './CommentForm.js';
 import {useState, useContext} from 'react';
-import RootCommentContext from "./RootCommentContext";
+import RootCommentContext from "./RootCommentContext.js";
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
+import Voting from './Voting.js';
 
 function Comments(props){
     const rootCommentInfo = useContext(RootCommentContext);
@@ -22,10 +23,11 @@ function Comments(props){
                         <div className="leading-10 text-md font-sans">{comment.postedAt}</div>
                     </div>
                     <div className="border-l-2 border-reddit_text-darker p-3 pb-0" style={{marginLeft:'18px'}}>
-                        <div className="pl-4">
+                        <div className="pl-4 -mt-4">
                             <div>
                                 <ReactMarkdown remarkPlugins={[gfm]} children={comment.body} />
                             </div>
+                            <Voting commentId={comment._id}/>
                             <Button 
                                 type={'button'}
                                 onClick={() => {setShowForm(comment._id)} }

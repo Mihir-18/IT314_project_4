@@ -6,13 +6,11 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from './models/User.js';
-import nodemailer from "nodemailer";
 import Comment from './models/Comment.js';
-
+import VotingRoutes from './VotingRoutes.js'
 
 const secret = 'secret123';
 const app = express();
-// const nodemailer = require("nodemailer");
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,12 +21,13 @@ app.use(cors({
      credentials: true,
 }));
 
-await mongoose.connect('mongodb://0.0.0.0:27017/newsAggregator', { useNewUrlParser: true, useUnifiedTopology: true, });
+await mongoose.connect('mongodb+srv://suyash:rjoa7zvue5mGQagd@cluster0.1u8c2l7.mongodb.net/newsAggregator', { useNewUrlParser: true, useUnifiedTopology: true, });
 const db = mongoose.connection;
 db.on('error', console.log);
 
+app.use(VotingRoutes);
 
-function getUserFromToken(token) {
+function getUserFromToken(token){
      const userInfo = jwt.verify(token, secret);
      return User.findById(userInfo.id);
 }
@@ -41,68 +40,51 @@ app.post('/register', (req, res) => {
      const { email, username } = req.body;
      const password = bcrypt.hashSync(req.body.password, 10);
      User.findOne({ email }).then(user1 => {
-          if (user1 == null) {
+          if(user1 == null){
                User.findOne({ username }).then(user2 => {
-                    if (user2 == null) {
+                    if(user2==null)
+                    {
                          const user = new User({ email, username, password });
                          user.save().then(user => {
                               jwt.sign({ id: user._id }, secret, (err, token) => {
                                    if (err) {
                                         console.log(err);
-                                        res.status(400).send("Invalid Credentials!");
+                                        res.send("Invalid username or password");
                                    }
                                    else {
                                         console.log(user);
                                         console.log(token);
-                                        let testAccount = nodemailer.createTestAccount();
-
-                                        let transporter = nodemailer.createTransport({
-                                             host: 'smtp.ethereal.email',
-                                             port: 587,
-                                             auth: {
-                                                  user: 'oma.marvin@ethereal.email',
-                                                  pass: 'jDGWthYUW92sjnQjQA'
-                                             }
-                                        });
-
-                                        let info = transporter.sendMail({
-                                             from: '"News Aggregator" <oma.marvin@ethereal.email>', // sender address
-                                             to: req.body.email, // list of receivers
-                                             subject: "Registration Successful!", // Subject line
-                                             text: "Your registration with News Aggregator is successful. Start your journey by making a post.", // plain text body
-                                             // html: "<b>News Aggregator</b>", // html body
-                                        });
-                                        res.status(200).cookie('token', token).send();
+                                        res.status(201).cookie('token', token).send();
                                    }
                               });
                          }).catch(event => {
                               console.log(event);
-                              res.status(400).send('Invalid Credentials!');
+                              res.send("Invalid username or password");
                          });
                     }
-                    else {
+                    else{
                          console.log("Username already exist");
-                         res.status(400).send('Username already exists!');
+                         res.send("Invalid username or password");
                     }
                }).catch(err => {
                     console.log(err);
-                    res.status(400).send('Invalid Credentials!');
+                    res.send("Invalid username or password");
                });
           }
-          else {
+          else{
                console.log("Email already exist");
-               res.status(400).send('Email already exists!');
+               res.send("Invalid username or password");
           }
      }).catch(err => {
           console.log(err);
-          res.status(400).send("Invalid Credentials!");
+          res.send("Invalid username or password");
      });
 });
 
 app.get('/user', (req, res) => {
      const token = req.cookies.token;
      console.log('Current user token is: ' + token);
-     getUserFromToken(token).then(user => {
+     getUserFromToken(token).then(user=> {
           res.json({ username: user.username });
      }).catch(err => {
           console.log(err);
@@ -121,10 +103,10 @@ app.post('/login', (req, res) => {
                          res.cookie('token', token).send();
                     });
                } else {
-                    res.status(400).send('Invalid username or password');
+                    res.send('Invalid username or password');
                }
           } else {
-               res.status(400).send('Invalid username or password');
+               res.send('Invalid username or password');
           }
      });
 });
@@ -175,6 +157,5 @@ app.post('/comments', (req, res)=>{
           res.sendStatus(401);
      });
 });
-
 
 app.listen(4000);
