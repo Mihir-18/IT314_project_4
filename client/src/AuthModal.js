@@ -139,7 +139,7 @@ function AuthModal(props) {
                     )}
                     {modalType === 'register' && (
                          <div>
-                              Already have an account? <button className="text-blue-600" onClick={() => modalContext.setShow('api') }>LOG IN</button>
+                              Already have an account? <button className="text-blue-600" onClick={() => modalContext.setShow('login') }>LOG IN</button>
                          </div>
                     )}
 

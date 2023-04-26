@@ -9,8 +9,8 @@ function BoardHeader() {
                               <img src="https://styles.redditmedia.com/t5_2qs0q/styles/communityIcon_kxcmzy9bt1381.jpg?width=256&format=pjpg&v=enabled&s=6a2945f540463756d33acd2919b0476668879106" alt="" />
                          </div>
                          <div className='pt-2 pl-4'>
-                              <h1 className='text-gray-300 text-3xl'>webdev: News Aggregator</h1>
-                              <h5 className="text-gray-500">webdev</h5>
+                              <h1 className='text-gray-300 text-3xl'>News Aggregator</h1>
+                              <h5 className="text-gray-500"></h5>
                          </div>
                     </div>
                </div>
