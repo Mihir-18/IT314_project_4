@@ -22,10 +22,11 @@ function CommentModal(props){
 
     return(
         <div className={"w-screen h-screen fixed top-0 left-0 z-20 flex "+visibleClass} style={{ backgroundColor: 'rgba(0,0,0,.6)' }}>
-            <ClickOutHandler onClickOut={()=>close()}>
-                <div className="border border-reddit_dark-brightest my-4 w-3/4 lg:w-1/2 bg-reddit_dark text-reddit_text p-4 mx-auto self-center rounded-md ">
-                    <div className="block overflow-scroll" style={{ maxHeight: "calc(100vh - 200px)" }}>
-                        {/* <PostContent open={true} {...comment} />
+            <div className="block overflow-scroll">
+                <ClickOutHandler onClickOut={() => close()}>
+                    <div className="border border-reddit_dark-brightest my-4 w-3/4 lg:w-1/2 bg-reddit_dark text-reddit_text p-4 mx-auto self-center rounded-md ">
+                        <div className=" " >
+                            {/* <PostContent open={true} {...comment} />
                         {!!comment && !!comment._id && (
                             <>
                                 <hr className="border-reddit_border my-4"/>
@@ -36,10 +37,11 @@ function CommentModal(props){
                                 </RootCommentContext.Provider>
                             </>
                         )} */}
-                        <Comment comment={comment} id={props.id}/>
+                            <Comment comment={comment} id={props.id} />
+                        </div>
                     </div>
-                </div>
-            </ClickOutHandler>  
+                </ClickOutHandler>
+            </div> 
         </div>
     );
 }

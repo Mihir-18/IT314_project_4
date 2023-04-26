@@ -6,9 +6,12 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import AuthModalContext from './AuthModalContext';
 import UserContext from './UserContext';
 import {Link} from 'react-router-dom';
+import RedirectContext from './RedirectContext';
 
 function Header() {
   const [userDropdownVisibilityClass, setuserDropdownVisibilityClass] = useState('hidden');
+  const [searchText, setSearchText] = useState('');
+  const {setRedirect} = useContext(RedirectContext);
 
   function useUserDropdown(ref) {
     useEffect(() => {
@@ -35,6 +38,11 @@ function Header() {
     }
   }
 
+  function doSearch(e){
+    e.preventDefault();
+    setRedirect('/search/'+encodeURIComponent(searchText));
+  }
+
   const authModal = useContext(AuthModalContext);
   const user = useContext(UserContext);
 
@@ -44,9 +52,9 @@ function Header() {
         <Link to="/">
           <img src={Logo} alt="" className='w-8 h-8 bg-reddit_dark' />
         </Link>
-        <form action="" className='bg-redddt_dark-brighter flex mx-4 p-1 px-3 rounded-md border border-reddit_border flex-grow'>
+        <form onSubmit={doSearch} className='bg-redddt_dark-brighter flex mx-4 p-1 px-3 rounded-md border border-reddit_border flex-grow'>
           <SearchIcon className='text-gray-400 h-6 w-6 mt-1' />
-          <input type="text" placeholder='Search' className='bg-reddit_dark-brighter p-1 pl-2 pr-0 focus:outline-none text-white text-sm' />
+          <input type="text" placeholder='Search' className='bg-reddit_dark-brighter p-1 pl-2 pr-0 focus:outline-none text-white text-sm w-full' value={searchText} onChange={e => setSearchText(e.target.value)} />
         </form>
         {user.username && (
           <div>

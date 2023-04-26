@@ -3,6 +3,7 @@ import CommentPage from './CommentPage.js';
 import {Routes, Route, useLocation} from 'react-router-dom';
 import CommentModal from './CommentModal.js';
 import {useState, useEffect} from 'react';
+import SearchResultsPage from './SearchResultsPage.js';
 
 function RoutingRoutes(){
 
@@ -36,6 +37,7 @@ function RoutingRoutes(){
             )}
             <Route path="/" element={<Board />} />
             <Route path="/comments/:id" element={<CommentPage />} />
+            <Route path="/search/:text" element={<SearchResultsPage/>} />
         </Routes>
     );
 }
