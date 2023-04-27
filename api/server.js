@@ -40,51 +40,68 @@ app.post('/register', (req, res) => {
      const { email, username } = req.body;
      const password = bcrypt.hashSync(req.body.password, 10);
      User.findOne({ email }).then(user1 => {
-          if(user1 == null){
+          if (user1 == null) {
                User.findOne({ username }).then(user2 => {
-                    if(user2==null)
-                    {
+                    if (user2 == null) {
                          const user = new User({ email, username, password });
                          user.save().then(user => {
                               jwt.sign({ id: user._id }, secret, (err, token) => {
                                    if (err) {
                                         console.log(err);
-                                        res.send("Invalid username or password");
+                                        res.status(400).send("Invalid Credentials!");
                                    }
                                    else {
                                         console.log(user);
                                         console.log(token);
-                                        res.status(201).cookie('token', token).send();
+                                        let testAccount = nodemailer.createTestAccount();
+
+                                        let transporter = nodemailer.createTransport({
+                                             host: 'smtp.ethereal.email',
+                                             port: 587,
+                                             auth: {
+                                                  user: 'oma.marvin@ethereal.email',
+                                                  pass: 'jDGWthYUW92sjnQjQA'
+                                             }
+                                        });
+
+                                        let info = transporter.sendMail({
+                                             from: '"News Aggregator" <oma.marvin@ethereal.email>', // sender address
+                                             to: req.body.email, // list of receivers
+                                             subject: "Registration Successful!", // Subject line
+                                             text: "Your registration with News Aggregator is successful. Start your journey by making a post.", // plain text body
+                                             // html: "<b>News Aggregator</b>", // html body
+                                        });
+                                        res.status(200).cookie('token', token).send();
                                    }
                               });
                          }).catch(event => {
                               console.log(event);
-                              res.send("Invalid username or password");
+                              res.status(400).send('Invalid Credentials!');
                          });
                     }
-                    else{
+                    else {
                          console.log("Username already exist");
-                         res.send("Invalid username or password");
+                         res.status(400).send('Username already exists!');
                     }
                }).catch(err => {
                     console.log(err);
-                    res.send("Invalid username or password");
+                    res.status(400).send('Invalid Credentials!');
                });
           }
-          else{
+          else {
                console.log("Email already exist");
-               res.send("Invalid username or password");
+               res.status(400).send('Email already exists!');
           }
      }).catch(err => {
           console.log(err);
-          res.send("Invalid username or password");
+          res.status(400).send("Invalid Credentials!");
      });
 });
 
 app.get('/user', (req, res) => {
      const token = req.cookies.token;
      console.log('Current user token is: ' + token);
-     getUserFromToken(token).then(user=> {
+     getUserFromToken(token).then(user => {
           res.json({ username: user.username });
      }).catch(err => {
           console.log(err);
@@ -100,13 +117,14 @@ app.post('/login', (req, res) => {
                const passOk = bcrypt.compareSync(password, user.password);
                if (passOk) {
                     jwt.sign({ id: user._id }, secret, (err, token) => {
+                         console.log(token);
                          res.cookie('token', token).send();
                     });
                } else {
-                    res.send('Invalid username or password');
+                    res.status(400).send('Invalid username or password');
                }
           } else {
-               res.send('Invalid username or password');
+               res.status(400).send('Invalid username or password');
           }
      });
 });
@@ -120,26 +138,32 @@ app.get('/comments', (req, res)=>{
      const filters = search ? { body: { $regex: '.*' + search + '.*' } } : { rootId: null }
      Comment.find(filters).sort({postedAt: -1}).then(comments =>{
           res.json(comments);
-     });
+     }).catch(err => {
+          res.sendStatus(404);
+     })
 });
 
 app.get('/comments/root/:rootId', (req, res)=>{
      Comment.find({rootId: req.params.rootId}).sort({postedAt: -1}).then(comments =>{
-          res.json(comments);
-     });
+          res.status(200).json(comments);
+     }).catch(err => {
+          res.sendStatus(404);
+     })
 });
 
 
 app.get('/comments/:id', (req, res)=>{
      Comment.findById(req.params.id).then(comment => {
-          res.json(comment);
+          res.status(200).json(comment);
+     }).catch(err => {
+          res.sendStatus(404);
      });
 });
 
 app.post('/comments', (req, res)=>{
      const token= req.cookies.token;
      if(!token){
-          res.sendStatus(401);
+          res.sendStatus(404);
           return;
      }
      getUserFromToken(token).then(userInfo=>{
@@ -155,8 +179,9 @@ app.post('/comments', (req, res)=>{
           comment.save().then(savedComment => {
                res.json(savedComment);
           }).catch(console.log);
+          res.sendStatus(200);
      }).catch(()=>{
-          res.sendStatus(401);
+          res.sendStatus(600);
      });
 });
 
