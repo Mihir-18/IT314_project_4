@@ -53,24 +53,24 @@ app.post('/register', (req, res) => {
                                    else {
                                         console.log(user);
                                         console.log(token);
-                                        let testAccount = nodemailer.createTestAccount();
+                                        // let testAccount = nodemailer.createTestAccount();
 
-                                        let transporter = nodemailer.createTransport({
-                                             host: 'smtp.ethereal.email',
-                                             port: 587,
-                                             auth: {
-                                                  user: 'oma.marvin@ethereal.email',
-                                                  pass: 'jDGWthYUW92sjnQjQA'
-                                             }
-                                        });
+                                        // let transporter = nodemailer.createTransport({
+                                        //      host: 'smtp.ethereal.email',
+                                        //      port: 587,
+                                        //      auth: {
+                                        //           user: 'oma.marvin@ethereal.email',
+                                        //           pass: 'jDGWthYUW92sjnQjQA'
+                                        //      }
+                                        // });
 
-                                        let info = transporter.sendMail({
-                                             from: '"News Aggregator" <oma.marvin@ethereal.email>', // sender address
-                                             to: req.body.email, // list of receivers
-                                             subject: "Registration Successful!", // Subject line
-                                             text: "Your registration with News Aggregator is successful. Start your journey by making a post.", // plain text body
-                                             // html: "<b>News Aggregator</b>", // html body
-                                        });
+                                        // let info = transporter.sendMail({
+                                        //      from: '"News Aggregator" <oma.marvin@ethereal.email>', // sender address
+                                        //      to: req.body.email, // list of receivers
+                                        //      subject: "Registration Successful!", // Subject line
+                                        //      text: "Your registration with News Aggregator is successful. Start your journey by making a post.", // plain text body
+                                        //      // html: "<b>News Aggregator</b>", // html body
+                                        // });
                                         res.status(200).cookie('token', token).send();
                                    }
                               });

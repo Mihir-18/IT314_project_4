@@ -5,7 +5,7 @@ import RootCommentContext from "./RootCommentContext.js";
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import Voting from './Voting.js';
-import TimeAgo from 'timeago-react'
+// import TimeAgo from 'timeago-react'
 
 function Comments(props){
     const rootCommentInfo = useContext(RootCommentContext);
@@ -21,7 +21,7 @@ function Comments(props){
                     <div className="flex mb-2">
                         <div className="bg-reddit_text w-10 h-10 rounded-full mr-2"/>
                         <div className="leading-10 pr-2 text-lg font-sans">{comment.author}</div>
-                        <TimeAgo className="leading-10 text-md font-sans" datetime={comment.postedAt} />
+                        <div className="leading-10 text-md font-sans">{comment.postedAt}</div>
                     </div>
                     <div className="border-l-2 border-reddit_text-darker p-3 pb-0" style={{marginLeft:'18px'}}>
                         <div className="pl-4 -mt-4">
