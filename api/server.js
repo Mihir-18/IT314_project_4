@@ -17,8 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(cors({
-     origin: 'http://localhost:3000',
-     credentials: true,
+     origin: '*',
+     // credentials: true,
 }));
 
 await mongoose.connect('mongodb+srv://suyash:rjoa7zvue5mGQagd@cluster0.1u8c2l7.mongodb.net/newsAggregator', { useNewUrlParser: true, useUnifiedTopology: true, });
