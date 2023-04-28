@@ -12,7 +12,7 @@ function CommentForm(props){
         e.preventDefault();
         const data={body:commentBody, parentId:props.parentId , rootId:props.rootId };
         // alert("comment="+commentBody+"\n root="+data.rootId);
-        axios.post('http://localhost:4000/comments', data, {withCredentials:true} )
+        axios.post('https://news-aggregator-backend.onrender.com/comments', data, {withCredentials:true} )
             .then(response => {
                 setCommentBody('');
                 if(props.onSubmit){

@@ -15,12 +15,12 @@ function App() {
   
 
   useEffect(() => {
-    axios.get('http://localhost:4000/user', { withCredentials: true })
+    axios.get('https://news-aggregator-backend.onrender.com/user', { withCredentials: true })
       .then(response => setUser(response.data)).catch(e => {console.log(e)});  
   }, []);
 
   function logout(){
-    axios.post('http://localhost:4000/logout', {}, {withCredentials:true})
+    axios.post('https://news-aggregator-backend.onrender.com/logout', {}, {withCredentials:true})
     .then(() => setUser({}));
   }
 

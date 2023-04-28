@@ -21,7 +21,7 @@ function PostFormModal(){
 
     function createPost(){
         const data= {title, body};
-        axios.post('http://localhost:4000/comments', data, {withCredentials:true}).then(response =>{
+        axios.post('https://news-aggregator-backend.onrender.com/comments', data, {withCredentials:true}).then(response =>{
             setNewPostId(response.data._id);
         }).catch(error=>{
             if(error.response.status===401){

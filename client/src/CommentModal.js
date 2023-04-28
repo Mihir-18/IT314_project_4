@@ -9,7 +9,7 @@ function CommentModal(props){
     const visibleClass= props.open? 'block': 'hidden';
 
     useEffect(() => {
-        axios.get('http://localhost:4000/comments/'+props.id)
+        axios.get('https://news-aggregator-backend.onrender.com/comments/'+props.id)
           .then(response => {
             setComment(response.data);
           });

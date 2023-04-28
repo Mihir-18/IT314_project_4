@@ -7,7 +7,7 @@ function PostsListing(){
     const [comments, setComments] = useState([]);
 
     useEffect(()=>{
-        axios.get('http://localhost:4000/comments', { withCredentials: true }).then(response => setComments(response.data));
+        axios.get('https://news-aggregator-backend.onrender.com/comments', { withCredentials: true }).then(response => setComments(response.data));
     }, []);
 
     return(

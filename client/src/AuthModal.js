@@ -28,7 +28,7 @@ function AuthModal(props) {
           const data = { email, username, password };
           const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
           if (regex.test(email)) {
-               axios.post('http://localhost:4000/register', data, { withCredentials: true })
+               axios.post('https://news-aggregator-backend.onrender.com/register', data, { withCredentials: true })
                     .then((response) => {
                          console.log(response);
                          if (response.status !== 200) {
@@ -65,7 +65,7 @@ function AuthModal(props) {
      function login(event) {
           event.preventDefault();
           const data = { username, password };
-          axios.post('http://localhost:4000/login', data, { withCredentials: true })
+          axios.post('https://news-aggregator-backend.onrender.com/login', data, { withCredentials: true })
                .then((response) => {
                     if (response.status !== 200) {
                          // console.log(response);

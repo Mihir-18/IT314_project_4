@@ -47,7 +47,7 @@ function Voting(props){
             direction = 'unvote';
         }
 
-        axios.get('http://localhost:4000/vote/'+props.commentId+'/'+direction, {withCredentials:true})
+        axios.get('https://news-aggregator-backend.onrender.com/vote/'+props.commentId+'/'+direction, {withCredentials:true})
         .then(response => {
             rootCommentInfo.refreshVotes();
         })

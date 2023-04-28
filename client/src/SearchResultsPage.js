@@ -8,7 +8,7 @@ function SearchResultsPage(props){
     const [comments, setComments] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:4000/comments?search='+text, { withCredentials: true }).then(response => setComments(response.data));
+        axios.get('https://news-aggregator-backend.onrender.com/comments?search='+text, { withCredentials: true }).then(response => setComments(response.data));
     }, []);
 
     return (
